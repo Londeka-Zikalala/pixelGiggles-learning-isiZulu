@@ -6,18 +6,20 @@ import session from 'express-session'
 import flash from 'express-flash'
 
 const app = express()
-app.use(session(sessionOptions));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(session({
+    secret: 'pixelGigglesKey',
+    resave: false,
+    saveUninitialized: true
+  }));
 
 app.use(flash());
 
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
-const handlebars = exphbs.create({
-    extname: '.handlebars',
-    defaultLayout: false,
-    layoutDir: './views/layouts',
-  });
+
   
   const pgp = pgPromise();
   const db = pgp({
@@ -27,7 +29,6 @@ const handlebars = exphbs.create({
   app.use(express.static('public'));
 
 
-app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: false }));
