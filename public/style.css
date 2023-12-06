@@ -91,3 +91,8 @@ footer {
 h1{
     text-align: center;
 }
+.stage1{
+    background-color: #f8f8f8;
+    color: red;
+    width: 300px;
+}
