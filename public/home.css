@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffe8a1; /* Adjust the background color as needed */
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.header {
+    background-color: #ff7f50; /* Adjust the header background color */
+    padding: 20px;
+}
+
+.header h1 {
+    color: #fff; /* Adjust the header text color */
+}
+
+.main-buttons {
+    margin-top: 20px;
+}
+
+button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #4caf50; /* Adjust the button background color */
+    color: #fff; /* Adjust the button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.avatars {
+    margin-top: 20px;
+    /* Add styles for avatars */
+}
+
+.progress-indicators {
+    margin-top: 20px;
+    /* Add styles for progress indicators */
+}
+
+
