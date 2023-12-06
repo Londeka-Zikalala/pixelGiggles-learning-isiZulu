@@ -46,10 +46,10 @@ app.get('/next-page', (req, res) => {
 });
 
 //route for the begginner level
-app.get('/begginner',(req, res)=> {
+app.get('/beginer',(req, res)=> {
 
 
-  res.render('beginner',{})
+  res.render('beginer',{})
 })
 
 
