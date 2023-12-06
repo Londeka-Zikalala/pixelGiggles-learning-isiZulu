@@ -2,7 +2,9 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #ffe8a1; /* Adjust the background color as needed */
+    background-image: url('https://storage.googleapis.com/artlab-public.appspot.com/share/YKM735BO8WKW.png');
+    background-size: cover;
+    /* background-color: #ffe8a1; */
 }
 
 .container {
