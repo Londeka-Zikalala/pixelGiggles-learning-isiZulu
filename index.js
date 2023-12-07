@@ -94,7 +94,14 @@ app.post('/beginer', async(req, res)=>{
   
       h6Elements.push(h6Element);
     }
-  
+    console.log({
+      getBeginnerLevelJson,
+      getBegginnerLevel,
+      stage1,
+      stage2, 
+      stage3,
+      h6Elements
+    })
     res.render('beginer',{
       getBeginnerLevelJson,
       getBegginnerLevel,
