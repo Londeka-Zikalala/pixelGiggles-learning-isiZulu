@@ -81,63 +81,62 @@ footer {
         transform: translateY(-10px);
     }
 }
-.testClass{
+
+.testClass {
     margin-inline: 40%;
     border: solid transparent;
     border-radius: 10px;
     background-color: #FF9800;
     max-width: 100%;
-    /* max-height: 50%; */
-
 }
-h1{
+
+h1 {
+    text-align: center;
+    font-family: 'Metal Mania', cursive;
+}
+
+/* Style for the Beginner Level Game */
+
+.stage {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff; /* White background color for each stage */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
-/* .stage1{
-    background-color: #f8f8f8;
-    color: red;
-    width: 300px;
-} */
-.stage{
-    /* display:none; */
+
+.stage h6 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
-:root {
-    --main-color: #ecf0f1;
-    --point-color: #555;
-    --size: 5px;
-  }
-  
-  .loader {
-      background-color: var(--main-color);
-      overflow: hidden;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0; left: 0;
+
+#audioElement {
+    display: none; /* Hide the audio element */
+}
+
+#volumeButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#livesDisplay {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+#label-container {
     display: flex;
-    align-items: center;
-    align-content: center; 
-    justify-content: center;  
-      z-index: 100000;
-  }
-  
-  .loader__element {
-   
-    margin: calc(var(--size)*2);
-  }
-  
-  .loader__element:nth-child(1) {
-    animation: preloader .6s ease-in-out alternate infinite;
-  }
-  .loader__element:nth-child(2) {
-    animation: preloader .6s ease-in-out alternate .2s infinite;
-  }
-  
-  .loader__element:nth-child(3) {
-    animation: preloader .6s ease-in-out alternate .4s infinite;
-  }
-  
-  @keyframes preloader {
-    100% { transform: scale(2); }
-  }
-  
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.notification {
+    margin: 10px;
+    padding: 10px;
+    background-color: #FFC107; /* Notification background color */
+    color: #fff; /* Notification text color */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

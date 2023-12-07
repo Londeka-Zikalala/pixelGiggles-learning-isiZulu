@@ -54,41 +54,56 @@ app.post('/beginer', async(req, res)=>{
     res.redirect(`beginer`)
 })
 //route for the begginner level
-app.get('/beginer',async (req, res)=> {
-const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
-// Using dummy values here since it is breaking 
-const username = 'Dr Smit'
-const level = 'beginer'
-const userId = 1
-let stage1;
-let stage2 ; 
-let stage3 ;
-
-for(var i = 0 ; i < getBegginnerLevel ; i++){
- let stages = getBegginnerLevel[i]
-  if(stages === 'Sawubona'){
-    stage1 = stages
-  let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
-  } else if(stages === 'Unjani'){
-    stage2 = stages
-    let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage2, level)
-
-  } else if(stages === 'Ngiyaphila'){
-    stage3 = stages
-    let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
-    console.log(updateUserProgress)
-  }
-
-}
-
-console.log( getBegginnerLevel)
-  res.render('beginer',{
-    getBegginnerLevel,
-    stage1,
-    stage2, 
-    stage3
-  })
-});
+  app.get('/beginer',async (req, res)=> {
+    const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
+    let userId = 1;
+    let level = 'beginner';
+    let username = 'Dr Smit'
+    let stage1, stage2, stage3;
+    // Convert the data to JSON
+    const getBeginnerLevelJson = JSON.stringify(getBegginnerLevel);
+  
+    for(var i = 0 ; i < getBegginnerLevel.length ; i++){
+      let stage = getBegginnerLevel[i]
+      if(stage.words === 'Sawubona'){
+        stage1 = stage.words
+        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
+      } else if(stage.words === 'Unjani'){
+        stage2 = stage.words
+        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage2, level)
+      } else if(stage.words === 'Ngiyaphila'){
+        stage3 = stage.words
+        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage3, level)
+        console.log(updateUserProgress)
+      }
+    }
+  
+    // store the translations
+    let translations = ['HELLO', 'HOW ARE YOU', 'I AM FINE'];
+  
+    //  store the stages
+    let stagesArray = [stage1, stage2, stage3];
+  
+    // Create an empty array to store the h6 elements
+    let h6Elements = [];
+  
+    for(let i = 0; i < stagesArray.length; i++) {
+      // Create the h6 element for the current stage
+      let h6Element = `<h6>${stagesArray[i]} means ${translations[i]}</h6>`;
+  
+  
+      h6Elements.push(h6Element);
+    }
+  
+    res.render('beginer',{
+      getBeginnerLevelJson,
+      getBegginnerLevel,
+      stage1,
+      stage2, 
+      stage3,
+      h6Elements
+    })
+  });
 
 // Route for the intermediate level
 app.get('/intermediate', async (req, res) => {

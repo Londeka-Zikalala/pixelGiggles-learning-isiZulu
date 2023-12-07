@@ -34,8 +34,9 @@ describe('The learningIsiZulu Function', function () {
   
   it('should update the user progress without giving an error', async function () {
     let username = 'Dr Smit';
+    let beginnerLevel = await learningIsiZuluTest.getBeginnerLevel()
     let level = 'beginner'
-    let stage = 1
+    let stage = beginnerLevel[0].stage
     let isComplete = false;
     await learningIsiZuluTest.insertPlayer(username);
     let userId = await learningIsiZuluTest.getUserId(username)
