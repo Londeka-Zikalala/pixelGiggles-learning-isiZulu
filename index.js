@@ -52,7 +52,8 @@ app.post('/beginer', async(req, res)=>{
   let username = req.body.username
   await learningIsizuluRoute.insertPlayer(username)
     res.redirect(`beginer`)
-})
+});
+
 //route for the begginner level
   app.get('/beginer',async (req, res)=> {
     const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
