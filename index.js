@@ -48,18 +48,27 @@ app.get('/next-page', async(req, res) => {
   res.render('Screen', {}); 
 });
 
-app.post('/beginer', async(req, res)=>{
-  let username = req.body.username
-  await learningIsizuluRoute.insertPlayer(username)
-    res.redirect(`beginer`)
+// app.post('/beginer', async(req, res)=>{
+//   let username = req.body.username
+//   await learningIsizuluRoute.insertPlayer(username)
+//     res.redirect(`beginer`)
+// });
+
+app.post('/beginer', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/beginer?username=${username}`);
+  console.log(username);
 });
+
+
 
 //route for the begginner level
   app.get('/beginer',async (req, res)=> {
     const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
     let userId = 1;
     let level = 'beginner';
-    let username = 'Dr Smit'
+    let username = 'Dr Smit';
     let stage1, stage2, stage3;
     // Convert the data to JSON
     const getBeginnerLevelJson = JSON.stringify(getBegginnerLevel);
@@ -69,7 +78,7 @@ app.post('/beginer', async(req, res)=>{
       if(stage.words === 'Sawubona'){
         stage1 = stage.words
         let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
-      } else if(stage.words === 'Unjani'){
+      } else if(stage.words === 'Unjani?'){
         stage2 = stage.words
         let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage2, level)
       } else if(stage.words === 'Ngiyaphila'){
@@ -109,7 +118,8 @@ app.post('/beginer', async(req, res)=>{
       stage1,
       stage2, 
       stage3,
-      h6Elements
+      h6Elements,
+      username
     })
   });
 
@@ -143,23 +153,41 @@ app.get('/intermediate', async (req, res) => {
     getIntermediateLevel,
     stage1,
     stage2,
-    stage3
+    stage3,
+    username
   });
 });
 
-app.post('/intermediate', async(req, res)=>{
-  let username = req.body.username
-  await learningIsizuluRoute.insertPlayer(username)
-    res.redirect(`intermediate`)
+// app.post('/intermediate', async(req, res)=>{
+//   let username = req.body.username
+//   await learningIsizuluRoute.insertPlayer(username)
+//     res.redirect(`intermediate`)
+// });
+
+app.post('/intermediate', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/intermediate?username=${username}`);
+  console.log(username)
 });
 
-// Route for the progress page
+// // Route for the progress page
+// app.get('/progress', async (req, res) => {
+//   const username = 'Dr Smit'; 
+//   const playerProgress = await learningIsizuluRoute.getUserProgress(username);
+
+//   res.render('progress', {
+//     playerProgress
+//   });
+// });
+
 app.get('/progress', async (req, res) => {
   const username = 'Dr Smit'; 
   const playerProgress = await learningIsizuluRoute.getUserProgress(username);
 
   res.render('progress', {
-    playerProgress
+      playerProgress,
+      username
   });
 });
 

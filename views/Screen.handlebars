@@ -26,10 +26,14 @@
     </header>
 
     <section class="main-content">
-        <div class="cta-buttons">
-            <a href="/beginer" class="btn">Start Beginner Level</a>
-            <a href="/intermediate" class="btn">Continue to Intermediate</a>
-        </div>
+        {{!-- <div class="cta-buttons"> --}}
+            {{!-- <a href="/beginer" class="btn">Start Beginner Level</a>
+            <a href="/intermediate" class="btn">Continue to Intermediate</a> --}}
+            <div class="cta-buttons">
+    <a href="/beginer?username={{username}}" class="btn">Start Beginner Level</a>
+     <a href="/intermediate?username={{username}}" class="btn">Continue to Intermediate</a>
+      </div>
+        {{!-- </div> --}}
 
         <div class="game-preview">
 
