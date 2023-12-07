@@ -1,0 +1,98 @@
+app.get('/beginer', async (req, res) => {
+  const username = 'Dr Smit';
+  const level = 'beginer';
+  const userId = 1;
+
+  // Get the beginner level stages
+  const getBegginnerLevel = await learningIsizuluRoute.getBeginnerLevel();
+
+  // Store the completed stages in an array
+  const completedStages = [];
+
+  // Loop through the beginner level stages
+  for (let i = 0; i < getBegginnerLevel.length; i++) {
+    let stage = getBegginnerLevel[i];
+
+    // Check if the user has completed the stage
+    const isComplete = await learningIsizuluRoute.isStageComplete(userId, username, stage, level);
+
+    // If the stage is complete, add it to the completedStages array
+    if (isComplete) {
+      completedStages.push(stage);
+    }
+  }
+
+  // Render the beginner page with the completed stages
+  res.render('beginer', {
+    getBegginnerLevel,
+    completedStages,
+  });
+});
+
+
+// Add this function to your learningIsizulu service
+async function isStageComplete(userId, username, stage, level) {
+    try {
+      // Get the user progress for the specified stage
+      const progress = await db.oneOrNone(`
+        SELECT is_complete
+        FROM progress
+        JOIN users ON progress.user_id = users.id
+        WHERE users.username = $1 AND progress.level = $2 AND progress.stage = $3
+      `, [username, level, stage]);
+  
+      // Return true if the stage is complete, false otherwise
+      return progress && progress.is_complete;
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
+  }
+  
+  // Add the new function to the returned object
+  return {
+    insertPlayer,
+    getUserId,
+    getBeginnerLevel,
+    getIntermediateLevel,
+    getUserProgress,
+    updateUserProgress,
+    isStageComplete, // Add this line
+  };
+
+
+  //begin. handlebars
+  /*For each item in an array (getBegginnerLevel):
+    Display information about the item:
+        - "Stage: [stage name],"
+        - If the current item is in another array (completedStages):
+            Display "Completed!"
+        - Else:
+            Display "Incomplete"
+*/
+  
+//   {{#each getBegginnerLevel}}
+//   <li>Stage: {{this}}, {{#if (includes completedStages this)}}
+//     Completed!
+//   {{else}}
+//     Incomplete
+//   {{/if}}</li>
+// {{/each}}
+
+// async function isStageComplete(userId, username, stage, level) {
+//     try {
+//       // Get the user progress for the specified stage
+//       const progress = await db.oneOrNone(`
+//         SELECT is_complete
+//         FROM progress
+//         JOIN users ON progress.user_id = users.id
+//         WHERE users.username = $1 AND progress.level = $2 AND progress.stage = $3
+//       `, [username, level, stage]);
+  
+//       // Return true if the stage is complete, false otherwise
+//       return progress && progress.is_complete;
+//     } catch (error) {
+//       console.error(error.message);
+//       return false;
+//     }
+//   }
