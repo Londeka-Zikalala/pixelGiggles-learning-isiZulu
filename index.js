@@ -147,6 +147,12 @@ app.get('/intermediate', async (req, res) => {
   });
 });
 
+app.post('/intermediate', async(req, res)=>{
+  let username = req.body.username
+  await learningIsizuluRoute.insertPlayer(username)
+    res.redirect(`intermediate`)
+});
+
 // Route for the progress page
 app.get('/progress', async (req, res) => {
   const username = 'Dr Smit'; 
