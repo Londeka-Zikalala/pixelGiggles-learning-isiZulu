@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <title>Zulu Zest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>ZuluZest</h1>
+    <h2 style="text-align: center;">Beginner Level</h2>
+
+    <div class="" id="livesDisplay"></div>
+
+    <div class="stage" id="stage2">
+        <h6>U-NJ-A-NI ? means HOW ARE YOU?</h6>
+        <button id="volumeButton" onclick="">
+            <i class="fa fa-volume-high"></i>
+        </button>
+    </div>
+
+    <form action="/beginner" method="get">
+         <div class="testClass">
+     <button type="button" onclick="init()">Start</button>
+<div id="label-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@0.4.0/dist/speech-commands.min.js"></script>
+<script type="text/javascript">
+    // more documentation available at
+    // https://github.com/tensorflow/tfjs-models/tree/master/speech-commands
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/_FX9GI_pq/";
+    async function createModel() {
+        const checkpointURL = URL + "model.json"; // model topology
+        const metadataURL = URL + "metadata.json"; // model metadata
+        const recognizer = speechCommands.create(
+            "BROWSER_FFT", // fourier transform type, not useful to change
+            undefined, // speech commands vocabulary feature, not useful for your models
+            checkpointURL,
+            metadataURL);
+        // check that model and metadata are loaded via HTTPS requests.
+        await recognizer.ensureModelLoaded();
+        return recognizer;
+    }
+      let isRecordingAllowed = false;
+let currentStage = 0;
+var stages = document.querySelectorAll('.stage');
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function showStage(index) {
+    // Hide all stages
+    stages.forEach((stage, i) => {
+        stage.style.display = i === index ? 'block' : 'none';
+    });
+}
+
+function showNextStage() {
+    // Display message and buttons for the current stage
+    let stageElement = document.querySelector('.stage');
+    stageElement.innerHTML = "You're On A Roll!!";
+    stageElement.innerHTML += "<a id='nextButton' href=''>Next</a>";
+    stageElement.innerHTML += "<button id='tryAgainButton' onclick='location.reload()'>Retake Stage</button>";
+}
+
+function tryAgain() {
+    document.getElementById('livesDisplay').innerText = 'Please come back after your lives refill';
+}
+
+async function init() {
+    isRecordingAllowed = true;
+    const recognizer = await createModel();
+    const classLabels = recognizer.wordLabels();
+    const labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < classLabels.length; i++) {
+        labelContainer.appendChild(document.createElement("div"));
+    }
+
+    recognizer.listen(result => {
+        if (!isRecordingAllowed) {
+            return;
+        }
+
+        const scores = result.scores;
+        let stageElement = document.querySelector('.stage');
+        showScores(classLabels, scores, stageElement, labelContainer);
+    }, {
+        includeSpectrogram: true,
+        probabilityThreshold: 0.75,
+        invokeCallbackOnNoiseAndUnknown: true,
+        overlapFactor: 0.50
+    });
+    // Stop the recognizer after 10 seconds
+    setTimeout(() => {
+        recognizer.stopListening();
+    }, 6000);
+}
+//change Sawubona to the stage name
+async function showScores(classLabels, scores, stageElement, labelContainer) {
+    for (let i = 0; i < classLabels.length; i++) {
+        if (classLabels[i] === 'Unjani?') {
+            await delay(5000); // Wait for 5 seconds before making a prediction
+            const classPrediction = classLabels[i] + ": " + scores[i].toFixed(2);
+            setTimeout(() => { // Wait for 6 seconds before checking the score
+                if (scores[i] > 0.80) {
+                    // Trigger next stage
+                    showNextStage();
+                } else {
+                    stageElement.innerHTML = "Oh Oh, Let's try again";
+                    stageElement.innerHTML += "<button id='tryAgainButton' onclick='location.reload()'>Try Again</button>";
+                }
+            }, 6000);
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+            console.log(classPrediction);
+            
+        }
+    }
+}
+
+        function myFunction() {
+          document.getElementById("stg2").innerHTML = "Unjani? = How Are You?";
+        }
+
+        var volumeButton = document.getElementById("volumeButton");
+
+        volumeButton.addEventListener("click", function () {
+          console.log("Button clicked!");
+        });
+
+      </script>
+    </div>
+  </form>
+</body>
+
+</html>
