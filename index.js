@@ -9,7 +9,6 @@ import learningIsizulu from './services/learningIsizulu.js'
 const pgp = pgPromise();
 
 
-
 const connectionString = process.env.DATABASE_URL || 'postgres://learning_isizulu_db_user:YvwWEV8OVJ2kQFSCnhY65Y5olSPwqWcP@dpg-clnelm5e89qs739eb6l0-a.oregon-postgres.render.com/learning_isizulu_db?ssl=true';
 const db = pgp(connectionString);
 const learningIsizuluRoute = learningIsizulu(db)
@@ -89,12 +88,51 @@ console.log( getBegginnerLevel)
     stage2, 
     stage3
   })
-})
+});
 
+// Route for the intermediate level
+app.get('/intermediate', async (req, res) => {
+  const getIntermediateLevel = await learningIsizuluRoute.getIntermediateLevel();
+  const username = 'Dr Smit';
+  const level = 'intermediate';
+  const userId = 1;
+  let stage1;
+  let stage2;
+  let stage3;
 
+  // Loop through the intermediate level stages
+  for (let i = 0; i < getIntermediateLevel.length; i++) {
+    let stages = getIntermediateLevel[i];
+    
+    if (stages === 'Sawubona, unjani?') {
+      stage1 = stages;
+      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage1, level);
+    } else if (stages === 'Ngiyaphila, wena unjani?') {
+      stage2 = stages;
+      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage2, level);
+    } else if (stages === 'Ubani igama lakho?') {
+      stage3 = stages;
+      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage3, level);
+    }
+  }
 
+  res.render('intermediate', {
+    getIntermediateLevel,
+    stage1,
+    stage2,
+    stage3
+  });
+});
 
+// Route for the progress page
+app.get('/progress', async (req, res) => {
+  const username = 'Dr Smit'; 
+  const playerProgress = await learningIsizuluRoute.getUserProgress(username);
 
+  res.render('progress', {
+    playerProgress
+  });
+});
 
 
 const PORT = process.env.PORT || 3000;

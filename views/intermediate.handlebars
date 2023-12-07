@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Intermediate Level</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form action="/intermediate" method="get">
+  <h1>ZuluZest</h1>
+  <h2 style="text-align: center;">Intermediate Level</h2>
+   <div class="stage1" id="stg1">
+<audio fa fa-volume-high onplay="myFunction()">
+  <source src="/public/20231206_211606.mp3" type="audio/mp3">
+  <source src="audio.ogg" type="audio/ogg">
+  
+</audio>
+  
+  <button id="volumeButton"><i class="fa fa-volume-high"></i></button>
+  </div>
+  <div class="testClass">
+ 
+
+
+<script>
+    function myFunction() {
+  document.getElementById("stg1").innerHTML = "Sawubona = Hello";
+    }
+
+     var volumeButton = document.getElementById("volumeButton");
+
+        volumeButton.addEventListener("click", function() {
+            console.log("Button clicked!");
+        });
+    
+</script>
+</body>
+</html>
