@@ -6,6 +6,9 @@ body {
     background-color: #f8f8f8; /* Light background color */
     color: #333; /* Main text color */
     font-family: 'Cardo';
+    background-image: url('/images/sawubona.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .container {
@@ -23,6 +26,7 @@ header {
 
 header h1 {
     font-size: 2.5em;
+    font-family: 'Metal Mania', cursive; /* Use Metal Mania font for the header */
 }
 
 main {
@@ -55,6 +59,16 @@ main {
 .game-preview img {
     max-width: 100%;
     border-radius: 10px;
+    animation: pulse 2s infinite; /* Add a pulse animation to game preview images */
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 footer {
@@ -88,11 +102,22 @@ footer {
     border-radius: 10px;
     background-color: #FF9800;
     max-width: 100%;
+    animation: slideIn 1s ease-in-out; /* Add a slide-in animation to the testClass */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
 
 h1 {
     text-align: center;
     font-family: 'Metal Mania', cursive;
+    color: #FF9800; /* Orange color for h1 */
 }
 
 /* Style for the Beginner Level Game */
@@ -100,15 +125,28 @@ h1 {
 .stage {
     margin-top: 20px;
     padding: 20px;
-    background-color: #fff; /* White background color for each stage */
+    background-color: #FFC107; /* Yellow background color for each stage */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    animation: fadeInUp 1s ease-in-out; /* Add a fade-in-up animation to the stages */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .stage h6 {
     font-size: 1.5em;
     margin-bottom: 10px;
+    font-family: 'Sedgwick Ave Display', cursive; /* Use Sedgwick Ave Display font for stage text */
 }
 
 #audioElement {
@@ -119,11 +157,13 @@ h1 {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color: #FF9800; /* Orange color for volume button */
 }
 
 #livesDisplay {
     font-size: 1.2em;
     margin-bottom: 10px;
+    color: #4CAF50; /* Green color for lives display */
 }
 
 #label-container {
@@ -135,7 +175,7 @@ h1 {
 .notification {
     margin: 10px;
     padding: 10px;
-    background-color: #FFC107; /* Notification background color */
+    background-color: #FF5722; /* Deep orange notification background color */
     color: #fff; /* Notification text color */
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
