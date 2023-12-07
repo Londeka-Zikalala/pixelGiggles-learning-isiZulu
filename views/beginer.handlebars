@@ -13,17 +13,30 @@
   <form action="/beginer" method="get">
   <h1>ZuluZest</h1>
 
-   <div class="stage1" id="stg1">
+    <div class="" id="livesDisplay"></div>
+   <div class="stage" id="stage1">
+    <h6>SA-WU-BO-NA means HELLO</h6>
 <audio fa fa-volume-high onplay="myFunction()">
   <source src="/public/20231206_211606.mp3" type="audio/mp3">
   <source src="audio.ogg" type="audio/ogg">
-  
 </audio>
-  
   <button id="volumeButton"><i class="fa fa-volume-high"></i></button>
+  {{!-- <button id="nextButton">Next</button>
+  <button id="tryAgainButton">Try Again</button> --}}
   </div>
+ {{!-- <div class="stage" id="stage2">
+    <h6>U-NJA-NI means HOW ARE YOU?</h6>
+<audio fa fa-volume-high onplay="">
+  <source src="/public/20231206_211606.mp3" type="audio/mp3">
+  <source src="audio.ogg" type="audio/ogg">
+</audio>
+  <button id="volumeButton"><i class="fa fa-volume-high"></i></button>
+  <button id="nextButton">Next</button>
+    <button id="tryAgainButton">Try Again</button>
+
+  </div> --}}
+
   <div class="testClass">
- 
 <button type="button" onclick="init()">Start</button>
 <div id="label-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -45,55 +58,81 @@
         await recognizer.ensureModelLoaded();
         return recognizer;
     }
-    async function init() {
-        const recognizer = await createModel();
-        const classLabels = recognizer.wordLabels(); // get class labels
-        const labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < classLabels.length; i++) {
-            labelContainer.appendChild(document.createElement("div"));
-        }
-        // console.log(classLabels);
-        // console.log(labelContainer);
-        // listen() takes two arguments:
-        // 1. A callback function that is invoked anytime a word is recognized.
-        // 2. A configuration object with adjustable fields
-        recognizer.listen(result => {
-            const scores = result.scores; // probability of prediction for each class
-            // render the probability scores per class
-            let stage1Element = document.querySelector('.stage1');
-            for (let i = 0; i < classLabels.length; i++) {
-                const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
-                if(classPrediction.includes('Sawubona') && result.scores[i] >0.95){
-                        stage1Element.innerText = "You're On A Roll!!"
-                }
-                console.log(stage1Element)
-                // const backgroundNoise = classPrediction[0]
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-                console.log(classPrediction);
+    let isRecordingAllowed = false;
+        let currentStage = 0;
+        var stages = document.querySelectorAll('.stage');
+
+        function showNextStage() {
+          // Hide other stages
+          stages.forEach((stage, index) => {
+            if (index !== currentStage) {
+              stage.style.display = 'none';
             }
-            
-            // console.log(scores);
-        }, 
-        
-        {
-            includeSpectrogram: true, // in case listen should return result.spectrogram
+          });
+
+          // Display message and buttons for the current stage
+          let stageElement = stages[currentStage];
+          stageElement.innerHTML = "You're On A Roll!!";
+          stageElement.innerHTML += "<button id='nextButton'>Next</button>";
+          stageElement.innerHTML += "<button id='tryAgainButton'>Try Again</button>";
+
+          // Attach event listeners
+          document.querySelector('#nextButton').addEventListener('click', showNextStage);
+          document.querySelector('#tryAgainButton').addEventListener('click', tryAgain);
+        }
+
+        function tryAgain() {
+          document.getElementById('livesDisplay').innerText = 'Please come back after your lives refill';
+        }
+
+        async function init() {
+          isRecordingAllowed = true;
+          const recognizer = await createModel();
+          const classLabels = recognizer.wordLabels();
+          const labelContainer = document.getElementById("label-container");
+          for (let i = 0; i < classLabels.length; i++) {
+            labelContainer.appendChild(document.createElement("div"));
+          }
+
+          recognizer.listen(result => {
+            if (!isRecordingAllowed) {
+              return;
+            }
+
+            const scores = result.scores;
+            let stageElement = stages[currentStage];
+
+            for (let i = 0; i < classLabels.length; i++) {
+              const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
+
+              if (classPrediction.includes('Sawubona') && result.scores[i] > 0.95) {
+                // Trigger next stage
+                showNextStage();
+              } else {
+                // Show 'Try Again' button if the prediction is incorrect
+                stageElement.innerHTML = "Oh Oh, Let's try again";
+                stageElement.innerHTML += "<button id='tryAgainButton'>Try Again</button>";
+              }
+
+              labelContainer.childNodes[i].innerHTML = classPrediction;
+              console.log(classPrediction);
+            }
+          }, {
+            includeSpectrogram: true,
             probabilityThreshold: 0.75,
             invokeCallbackOnNoiseAndUnknown: true,
-            overlapFactor: 0.50 // probably want between 0.5 and 0.75. More info in README
-        });
-        // Stop the recognition in 5 seconds.
-        // setTimeout(() => recognizer.stopListening(), 5000);
-    }
+            overlapFactor: 0.50
+          });
+        }
 
+        function myFunction() {
+          document.getElementById("stg1").innerHTML = "Sawubona = Hello";
+        }
 
-    function myFunction() {
-  document.getElementById("stg1").innerHTML = "Sawubona = Hello";
-    }
+        var volumeButton = document.getElementById("volumeButton");
 
-     var volumeButton = document.getElementById("volumeButton");
-
-        volumeButton.addEventListener("click", function() {
-            console.log("Button clicked!");
+        volumeButton.addEventListener("click", function () {
+          console.log("Button clicked!");
         });
     
 </script>

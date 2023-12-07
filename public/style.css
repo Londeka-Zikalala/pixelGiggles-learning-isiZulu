@@ -93,12 +93,14 @@ footer {
 h1{
     text-align: center;
 }
-.stage1{
+/* .stage1{
     background-color: #f8f8f8;
     color: red;
     width: 300px;
+} */
+.stage{
+    /* display:none; */
 }
-
 :root {
     --main-color: #ecf0f1;
     --point-color: #555;
