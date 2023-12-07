@@ -1,0 +1,59 @@
+<!-- progress.handlebars -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Progress</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>ZuluZest</h1>
+    <h2 style="text-align: center;">Player Progress</h2>
+    <div class="grid">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Level</th>
+                    <th>Stage</th>
+                    <th colspan="2">Completion Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if playerProgress.length}}
+                    {{#each playerProgress}}
+                        <tr>
+                            <td>{{this.user_id}}</td>
+                            <td>{{this.level}}</td>
+                            <td>{{this.stage}}</td>
+                            <td>{{#if this.is_complete}}Completed{{else}}Not Completed{{/if}}</td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No progress data available.</td>
+                    </tr>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

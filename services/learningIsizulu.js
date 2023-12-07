@@ -13,25 +13,35 @@ function learningIsizulu(db) {
 
         }
 
-    //function to get user's progress
-    async function getUserProgress(username) {
-        try {
-            //check if the user exists 
-            const currentPlayer = await db.oneOrNone(`SELECT id FROM users WHERE username =$1`, [username]);
-            if (currentPlayer) {
-                //get the progress
-                let playerProgress = await db.manyOrNone(`SELECT progress.id, progress.user_id, progress.level, progress.stage, progress.is_complete
-            FROM progress
-            JOIN users ON progress.user_id = users.id
-            WHERE users.username = $1`, [username])
-            return playerProgress
+        async function getUserProgress(username) {
+            try {
+                //check if the user exists 
+                const currentPlayer = await db.oneOrNone(`SELECT id FROM users WHERE username =$1`, [username]);
+                if (currentPlayer) {
+                    //get the progress
+                    let playerProgresses = await db.manyOrNone(`SELECT progress.id, progress.user_id, progress.level, progress.stage, progress.is_complete
+                FROM progress
+                JOIN users ON progress.user_id = users.id
+                WHERE users.username = $1`, [username])
+                
+                //get the stage from the appropriate level table for each progress
+                for (let playerProgress of playerProgresses) {
+                    let stage;
+                    if (playerProgress.level === 'beginner') {
+                        stage = await db.oneOrNone(`SELECT words FROM beginner_level WHERE stage = $1`, [playerProgress.stage]);
+                    } else if (playerProgress.level === 'intermediate') {
+                        stage = await db.oneOrNone(`SELECT words FROM intermediate_level WHERE stage = $1`, [playerProgress.stage]);
+                    }
+                    playerProgress.stage = stage ? stage.words : 'Stage not found';
+                }
+        
+                return playerProgresses;
+                }
+                
+            } catch(error) {
+                console.error(error.message)
             }
-            
-        } catch(error) {
-            console.error(error.message)
         }
-    }
-    
     //get the user id 
     async function getUserId(username) {
         let user = await db.oneOrNone(`SELECT * FROM users WHERE username = $1`, [username]);
@@ -41,9 +51,9 @@ function learningIsizulu(db) {
         }
     //function to update the user progress
     async function updateUserProgress(userId, username, stage, level) {
-      
+  
         try {
-
+    
             userId = await getUserId(username)
             let CurrentStage = await db.none(`INSERT INTO progress (user_id, level, stage, is_complete) VALUES ($1,$2,$3,false)`, [userId, level, stage]);
             if (!CurrentStage) {
@@ -52,7 +62,7 @@ function learningIsizulu(db) {
         } catch (error) {
             console.error(error.message)
         }
-        }
+    }
     //function to fetch the beginner level
     async function getBeginnerLevel() {
         try {

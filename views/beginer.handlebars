@@ -1,30 +1,33 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <title>Zulu Zest</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <form action="/beginer" method="get">
-  <h1>ZuluZest</h1>
 
-   <div class="stage1" id="stg1">
-<audio fa fa-volume-high onplay="myFunction()">
-  <source src="/public/20231206_211606.mp3" type="audio/mp3">
-  <source src="audio.ogg" type="audio/ogg">
-  
-</audio>
-  
-  <button id="volumeButton"><i class="fa fa-volume-high"></i></button>
-  </div>
-  <div class="testClass">
- 
-<button type="button" onclick="init()">Start</button>
+<body>
+        <h1>ZuluZest</h1>
+        <h2 style="text-align: center;">Beginer Level</h2>
+        <h3>Welcome, {{username}}, to the Beginner Level</h3>
+
+    <div class="" id="livesDisplay"></div>
+
+    <div class="stage" id="stage1">
+        <h6>SA-WU-BO-NA means HELLO</h6>
+        <button id="volumeButton" onclick="new Audio('20231206_211606.mp3').play()">
+            <i class="fa fa-volume-high"></i>
+        </button>
+    </div>
+
+    <form action="/beginner" method="get">
+         <div class="testClass">
+     <button type="button" onclick="init()">Start</button>
 <div id="label-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@0.4.0/dist/speech-commands.min.js"></script>
@@ -45,60 +48,96 @@
         await recognizer.ensureModelLoaded();
         return recognizer;
     }
-    async function init() {
-        const recognizer = await createModel();
-        const classLabels = recognizer.wordLabels(); // get class labels
-        const labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < classLabels.length; i++) {
-            labelContainer.appendChild(document.createElement("div"));
+      let isRecordingAllowed = false;
+let currentStage = 0;
+var stages = document.querySelectorAll('.stage');
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function showStage(index) {
+    // Hide all stages
+    stages.forEach((stage, i) => {
+        stage.style.display = i === index ? 'block' : 'none';
+    });
+}
+
+function showNextStage() {
+    // Display message and buttons for the current stage
+    let stageElement = document.querySelector('.stage');
+    stageElement.innerHTML = "You're On A Roll!!";
+    stageElement.innerHTML += "<a id='nextButton' href=''>Next</a>";
+    stageElement.innerHTML += "<button id='tryAgainButton' onclick='location.reload()'>Retake Stage</button>";
+}
+
+function tryAgain() {
+    document.getElementById('livesDisplay').innerText = 'Please come back after your lives refill';
+}
+
+async function init() {
+    isRecordingAllowed = true;
+    const recognizer = await createModel();
+    const classLabels = recognizer.wordLabels();
+    const labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < classLabels.length; i++) {
+        labelContainer.appendChild(document.createElement("div"));
+    }
+
+    recognizer.listen(result => {
+        if (!isRecordingAllowed) {
+            return;
         }
-        // console.log(classLabels);
-        // console.log(labelContainer);
-        // listen() takes two arguments:
-        // 1. A callback function that is invoked anytime a word is recognized.
-        // 2. A configuration object with adjustable fields
-        recognizer.listen(result => {
-            const scores = result.scores; // probability of prediction for each class
-            // render the probability scores per class
-            let stage1Element = document.querySelector('.stage1');
-            for (let i = 0; i < classLabels.length; i++) {
-                const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
-                if(classPrediction.includes('Sawubona') && result.scores[i] >0.95){
-                        stage1Element.innerText = "You're On A Roll!!"
+
+        const scores = result.scores;
+        let stageElement = document.querySelector('.stage');
+        showScores(classLabels, scores, stageElement, labelContainer);
+    }, {
+        includeSpectrogram: true,
+        probabilityThreshold: 0.75,
+        invokeCallbackOnNoiseAndUnknown: true,
+        overlapFactor: 0.50
+    });
+    // Stop the recognizer after 10 seconds
+    setTimeout(() => {
+        recognizer.stopListening();
+    }, 6000);
+}
+
+async function showScores(classLabels, scores, stageElement, labelContainer) {
+    for (let i = 0; i < classLabels.length; i++) {
+        if (classLabels[i] === 'Sawubona') {
+            await delay(5000); // Wait for 5 seconds before making a prediction
+            const classPrediction = classLabels[i] + ": " + scores[i].toFixed(2);
+            setTimeout(() => { // Wait for 6 seconds before checking the score
+                if (scores[i] > 0.80) {
+                    // Trigger next stage
+                    showNextStage();
+                } else {
+                    stageElement.innerHTML = "Oh Oh, Let's try again";
+                    stageElement.innerHTML += "<button id='tryAgainButton' onclick='location.reload()'>Try Again</button>";
                 }
-                console.log(stage1Element)
-                // const backgroundNoise = classPrediction[0]
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-                console.log(classPrediction);
-            }
+            }, 6000);
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+            console.log(classPrediction);
             
-            // console.log(scores);
-        }, 
-        
-        {
-            includeSpectrogram: true, // in case listen should return result.spectrogram
-            probabilityThreshold: 0.75,
-            invokeCallbackOnNoiseAndUnknown: true,
-            overlapFactor: 0.50 // probably want between 0.5 and 0.75. More info in README
-        });
-        // Stop the recognition in 5 seconds.
-        // setTimeout(() => recognizer.stopListening(), 5000);
+        }
     }
+}
 
+        function myFunction() {
+          document.getElementById("stg1").innerHTML = "Sawubona = Hello";
+        }
 
-    function myFunction() {
-  document.getElementById("stg1").innerHTML = "Sawubona = Hello";
-    }
+        var volumeButton = document.getElementById("volumeButton");
 
-     var volumeButton = document.getElementById("volumeButton");
-
-        volumeButton.addEventListener("click", function() {
-            console.log("Button clicked!");
+        volumeButton.addEventListener("click", function () {
+          console.log("Button clicked!");
         });
-    
-</script>
 
-</div>
-</form>
+      </script>
+    </div>
+  </form>
 </body>
+
 </html>
