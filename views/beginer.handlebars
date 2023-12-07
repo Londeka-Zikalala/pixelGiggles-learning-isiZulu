@@ -108,7 +108,7 @@
               if (classPrediction.includes('Sawubona') && result.scores[i] > 0.95) {
                 // Trigger next stage
                 showNextStage();
-              } else {
+              } else  {
                 // Show 'Try Again' button if the prediction is incorrect
                 stageElement.innerHTML = "Oh Oh, Let's try again";
                 stageElement.innerHTML += "<button id='tryAgainButton'>Try Again</button>";
