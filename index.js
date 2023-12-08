@@ -61,6 +61,28 @@ app.post('/beginer', async (req, res) => {
   console.log(username);
 });
 
+app.post('/begstage2', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/begstage2?username=${username}`);
+  console.log(username);
+});
+
+app.get('/begstage2', async(req, res) =>{
+ res.render('begstage2');
+});
+
+app.post('/begstage3', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/begstage3?username=${username}`);
+  console.log(username);
+});
+
+app.get('/begstage2', async(req, res) =>{
+ res.render('begstage2');
+});
+
 
 
 //route for the begginner level
@@ -169,6 +191,17 @@ app.post('/intermediate', async (req, res) => {
   await learningIsizuluRoute.insertPlayer(username);
   res.redirect(`/intermediate?username=${username}`);
   console.log(username)
+});
+
+app.post('/interstage3', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/interstage3?username=${username}`);
+  console.log(username)
+});
+
+app.get('/interstage3', async(req, res)=>{
+  res.render('interstage3')
 });
 
 // // Route for the progress page
