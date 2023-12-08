@@ -12,21 +12,21 @@
 </head>
 
 <body>
-    <h1>ZuluZest</h1>
-    <h2 style="text-align: center;">Beginner Level</h2>
+        <h1>ZuluZest</h1>
+        <h2 style="text-align: center;">Beginer Level</h2>
+        <h3>Welcome, {{username}}, to the Beginner Level</h3>
 
     <div class="" id="livesDisplay"></div>
- {{!-- //add the audio for Unjani --}}
-    <div class="stage" id="stage2">
-        <h6>U-NJ-A-NI ? means HOW ARE YOU?</h6>
-        <button id="volumeButton" onclick="new Audio('how are you.mp3').play()"></button>
-         <button id="volumeButton" onclick="">
+
+    <div class="stage" id="stage1">
+        <h6>NGI-YA-PHI-LA means I AM FINE</h6>
+        <button id="volumeButton" onclick="new Audio('ngiyaphila.mp3').play()">
             <i class="fa fa-volume-high"></i>
         </button>
     </div>
 
-    <form action="/begstage3" method="get">
-        <div class="testClass">
+    <form action="/begstage2" method="get">
+       <div class="testClass">
             <button type="button" onclick="init()">Start</button>
             <div id="label-container"></div>
             <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -53,7 +53,7 @@
                 let isRecordingAllowed = false;
                 let currentStage = 0;
                 var stages = document.querySelectorAll('.stage');
-            ///timeout function
+            ///timeout function for the delay of recording
                 function delay(time) {
                     return new Promise(resolve => setTimeout(resolve, time));
                 }
@@ -69,8 +69,11 @@
                     // Display message and buttons for the current stage
                     let stageElement = document.querySelector('.stage');
                     stageElement.innerHTML = "You're On A Roll!!";
-                    stageElement.innerHTML += "<a id='nextButton' href='begstage3'>Next</a>";
+                    stageElement.innerHTML += "<a id='nextButton' href='intermediate'>Next</a>";
                     stageElement.innerHTML += "<button id='tryAgainButton' onclick='location.reload()'>Retake Stage</button>";
+                        // A pop-up message for finishing the level
+                    alert("Yay! Press Next To See The Intermediate Level");
+
                 }
                     ///try again function
                 function tryAgain() {
@@ -108,7 +111,7 @@
                 //change Sawubona to the stage name
                 async function showScores(classLabels, scores, stageElement, labelContainer) {
                     for (let i = 0; i < classLabels.length; i++) {
-                        if (classLabels[i] === 'Unjani') {
+                        if (classLabels[i] === 'Ngiyaphila') {
                             await delay(5000); // Wait for 5 seconds before making a prediction
                             const classPrediction = classLabels[i] + ": " + scores[i].toFixed(2);
                             setTimeout(() => { // Wait for 6 seconds before checking the score
