@@ -72,16 +72,16 @@ app.get('/begstage2', async(req, res) =>{
  res.render('begstage2');
 });
 
-app.post('/begstage3', async (req, res) => {
-  let username = req.params.username;
-  await learningIsizuluRoute.insertPlayer(username);
-  res.redirect(`/begstage3?username=${username}`);
-  console.log(username);
-});
+// app.post('/begstage3', async (req, res) => {
+//   let username = req.params.username;
+//   await learningIsizuluRoute.insertPlayer(username);
+//   res.redirect(`/begstage3?username=${username}`);
+//   console.log(username);
+// });
 
-app.get('/begstage3', async(req, res) =>{
- res.render('begstage3');
-});
+// app.get('/begstage3', async(req, res) =>{
+//  res.render('begstage3');
+// });
 
 
 
