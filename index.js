@@ -79,8 +79,8 @@ app.post('/begstage3', async (req, res) => {
   console.log(username);
 });
 
-app.get('/begstage2', async(req, res) =>{
- res.render('begstage2');
+app.get('/begstage3', async(req, res) =>{
+ res.render('begstage3');
 });
 
 
