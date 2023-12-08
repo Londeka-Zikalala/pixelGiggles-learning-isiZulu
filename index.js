@@ -204,6 +204,17 @@ app.get('/interstage3', async(req, res)=>{
   res.render('interstage3')
 });
 
+app.post('/intermediate2', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/intermediate2?username=${username}`);
+  console.log(username)
+});
+
+app.get('/intermediate2', async(req, res)=>{
+  res.render('intermediate2')
+});
+
 // // Route for the progress page
 // app.get('/progress', async (req, res) => {
 //   const username = 'Dr Smit'; 
