@@ -50,9 +50,9 @@
         return recognizer;
     }
     
-     let isRecordingAllowed = false;
-let currentStage = 0;
-var stages = document.querySelectorAll('.stage');
+    let isRecordingAllowed = false;
+    let currentStage = 0;
+    var stages = document.querySelector('.stage');
 
 function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
@@ -78,6 +78,7 @@ function tryAgain() {
 }
 
     async function init() {
+        isRecordingAllowed = true
         const recognizer = await createModel();
         const classLabels = recognizer.wordLabels(); // get class labels
         const labelContainer = document.getElementById("label-container");
@@ -88,25 +89,24 @@ function tryAgain() {
         // 1. A callback function that is invoked anytime a word is recognized.
         // 2. A configuration object with adjustable fields
         recognizer.listen(result => {
+            if (!isRecordingAllowed) {
+                            return;
+                        }
             const scores = result.scores; // probability of prediction for each class
             // render the probability scores per class
               let stageElement = document.querySelector('.stage');
         showScores(classLabels, scores, stageElement, labelContainer);
-            for (let i = 0; i < classLabels.length; i++) {
-                const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
+            
         }, {
         includeSpectrogram: true,
         probabilityThreshold: 0.75,
         invokeCallbackOnNoiseAndUnknown: true,
         overlapFactor: 0.50
     });
-    // Stop the recognizer after 10 seconds
+    // Stop the recognizer after 6 seconds
     setTimeout(() => {
         recognizer.stopListening();
     }, 6000);
-        // Stop the recognition in 6 seconds.
         
     }
 
@@ -127,7 +127,7 @@ async function showScores(classLabels, scores, stageElement, labelContainer) {
             }, 6000);
                     labelContainer.childNodes[i].innerHTML = classPrediction;
             console.log(classPrediction);
-            
+
         }
     }
 }
