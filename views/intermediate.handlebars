@@ -15,7 +15,7 @@
     <div class="" id="livesDisplay"></div>
 
     <div class="stage" id="stage1">
-        <h6>NGI-YA-PHI-LA, WE-NA U-NJA-NI? means I AM WELL, HOW ARE ARE YOU?</h6>
+        <h6>NGI-YA-PHI-LA, U-NJA-NI? means I AM WELL, HOW ARE ARE YOU?</h6>
         <button id="volumeButton" onclick="new Audio('20231206_211606.mp3').play()">
             <i class="fa fa-volume-high"></i>
         </button>
@@ -87,15 +87,16 @@ function tryAgain() {
         // listen() takes two arguments:
         // 1. A callback function that is invoked anytime a word is recognized.
         // 2. A configuration object with adjustable fields
-        recognizer.listen(result => {
+        
+          recognizer.listen(result => {
+        if (!isRecordingAllowed) {
+            return;
+        }
             const scores = result.scores; // probability of prediction for each class
             // render the probability scores per class
               let stageElement = document.querySelector('.stage');
         showScores(classLabels, scores, stageElement, labelContainer);
-            for (let i = 0; i < classLabels.length; i++) {
-                const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
+           
         }, {
         includeSpectrogram: true,
         probabilityThreshold: 0.75,
