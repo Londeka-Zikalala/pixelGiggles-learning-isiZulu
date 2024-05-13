@@ -61,6 +61,10 @@ app.post('/beginer', async (req, res) => {
   console.log(username);
 });
 
+app.get('/beginer', async (req, res) => {
+  const username = req.query.username;
+  res.render('beginer', { username });
+});
 app.post('/begstage2', async (req, res) => {
   let username = req.params.username;
   await learningIsizuluRoute.insertPlayer(username);
@@ -72,16 +76,16 @@ app.get('/begstage2', async(req, res) =>{
  res.render('begstage2');
 });
 
-// app.post('/begstage3', async (req, res) => {
-//   let username = req.params.username;
-//   await learningIsizuluRoute.insertPlayer(username);
-//   res.redirect(`/begstage3?username=${username}`);
-//   console.log(username);
-// });
+app.post('/begstage3', async (req, res) => {
+  let username = req.params.username;
+  await learningIsizuluRoute.insertPlayer(username);
+  res.redirect(`/begstage3?username=${username}`);
+  console.log(username);
+});
 
-// app.get('/begstage3', async(req, res) =>{
-//  res.render('begstage3');
-// });
+app.get('/begstage3', async(req, res) =>{
+ res.render('begstage3');
+});
 
 
 
@@ -191,6 +195,11 @@ app.post('/intermediate', async (req, res) => {
   await learningIsizuluRoute.insertPlayer(username);
   res.redirect(`/intermediate?username=${username}`);
   console.log(username)
+});
+
+app.get('/intermediate', async (req, res) => {
+  const username = req.query.username;
+  res.render('intermediate', { username });
 });
 
 app.post('/interstage3', async (req, res) => {
