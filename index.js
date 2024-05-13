@@ -55,7 +55,7 @@ app.get('/next-page', async(req, res) => {
 // });
 
 app.post('/beginer', async (req, res) => {
-  let username = req.params.username;
+  let username = req.body.username;
   await learningIsizuluRoute.insertPlayer(username);
   res.redirect(`/beginer?username=${username}`);
   console.log(username);
@@ -86,99 +86,99 @@ app.get('/begstage2', async(req, res) =>{
 
 
 //route for the begginner level
-  app.get('/beginer',async (req, res)=> {
-    const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
-    let userId = 1;
-    let level = 'beginner';
-    let username = 'Dr Smit';
-    let stage1, stage2, stage3;
-    // Convert the data to JSON
-    const getBeginnerLevelJson = JSON.stringify(getBegginnerLevel);
+  // app.get('/beginer',async (req, res)=> {
+  //   const getBegginnerLevel =  await learningIsizuluRoute.getBeginnerLevel()
+  //   let userId = 1;
+  //   let level = 'beginner';
+  //   let username = 'Dr Smit';
+  //   let stage1, stage2, stage3;
+  //   // Convert the data to JSON
+  //   const getBeginnerLevelJson = JSON.stringify(getBegginnerLevel);
   
-    for(var i = 0 ; i < getBegginnerLevel.length ; i++){
-      let stage = getBegginnerLevel[i]
-      if(stage.words === 'Sawubona'){
-        stage1 = stage.words
-        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
-      } else if(stage.words === 'Unjani?'){
-        stage2 = stage.words
-        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage2, level)
-      } else if(stage.words === 'Ngiyaphila'){
-        stage3 = stage.words
-        let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage3, level)
-        console.log(updateUserProgress)
-      }
-    }
+  //   for(var i = 0 ; i < getBegginnerLevel.length ; i++){
+  //     let stage = getBegginnerLevel[i]
+  //     if(stage.words === 'Sawubona'){
+  //       stage1 = stage.words
+  //       let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage1, level)
+  //     } else if(stage.words === 'Unjani?'){
+  //       stage2 = stage.words
+  //       let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage2, level)
+  //     } else if(stage.words === 'Ngiyaphila'){
+  //       stage3 = stage.words
+  //       let updateUserProgress =  await learningIsizuluRoute.updateUserProgress(userId,username, stage3, level)
+  //       console.log(updateUserProgress)
+  //     }
+  //   }
   
-    // store the translations
-    let translations = ['HELLO', 'HOW ARE YOU', 'I AM FINE'];
+  //   // store the translations
+  //   let translations = ['HELLO', 'HOW ARE YOU', 'I AM FINE'];
   
-    //  store the stages
-    let stagesArray = [stage1, stage2, stage3];
+  //   //  store the stages
+  //   let stagesArray = [stage1, stage2, stage3];
   
-    // Create an empty array to store the h6 elements
-    let h6Elements = [];
+  //   // Create an empty array to store the h6 elements
+  //   let h6Elements = [];
   
-    for(let i = 0; i < stagesArray.length; i++) {
-      // Create the h6 element for the current stage
-      let h6Element = `<h6>${stagesArray[i]} means ${translations[i]}</h6>`;
+  //   for(let i = 0; i < stagesArray.length; i++) {
+  //     // Create the h6 element for the current stage
+  //     let h6Element = `<h6>${stagesArray[i]} means ${translations[i]}</h6>`;
   
   
-      h6Elements.push(h6Element);
-    }
-    console.log({
-      getBeginnerLevelJson,
-      getBegginnerLevel,
-      stage1,
-      stage2, 
-      stage3,
-      h6Elements
-    })
-    res.render('beginer',{
-      getBeginnerLevelJson,
-      getBegginnerLevel,
-      stage1,
-      stage2, 
-      stage3,
-      h6Elements,
-      username
-    })
-  });
+  //     h6Elements.push(h6Element);
+  //   }
+  //   console.log({
+  //     getBeginnerLevelJson,
+  //     getBegginnerLevel,
+  //     stage1,
+  //     stage2, 
+  //     stage3,
+  //     h6Elements
+  //   })
+  //   res.render('beginer',{
+  //     getBeginnerLevelJson,
+  //     getBegginnerLevel,
+  //     stage1,
+  //     stage2, 
+  //     stage3,
+  //     h6Elements,
+  //     username
+  //   })
+  // });
 
 // Route for the intermediate level
-app.get('/intermediate', async (req, res) => {
-  const getIntermediateLevel = await learningIsizuluRoute.getIntermediateLevel();
-  const username = 'Dr Smit';
-  const level = 'intermediate';
-  const userId = 1;
-  let stage1;
-  let stage2;
-  let stage3;
+// app.get('/intermediate', async (req, res) => {
+//   const getIntermediateLevel = await learningIsizuluRoute.getIntermediateLevel();
+//   const username = 'Dr Smit';
+//   const level = 'intermediate';
+//   const userId = 1;
+//   let stage1;
+//   let stage2;
+//   let stage3;
 
-  // Loop through the intermediate level stages
-  for (let i = 0; i < getIntermediateLevel.length; i++) {
-    let stages = getIntermediateLevel[i];
+//   // Loop through the intermediate level stages
+//   for (let i = 0; i < getIntermediateLevel.length; i++) {
+//     let stages = getIntermediateLevel[i];
     
-    if (stages === 'Sawubona, unjani?') {
-      stage1 = stages;
-      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage1, level);
-    } else if (stages === 'Ngiyaphila, wena unjani?') {
-      stage2 = stages;
-      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage2, level);
-    } else if (stages === 'Ubani igama lakho?') {
-      stage3 = stages;
-      let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage3, level);
-    }
-  }
+//     if (stages === 'Sawubona, unjani?') {
+//       stage1 = stages;
+//       let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage1, level);
+//     } else if (stages === 'Ngiyaphila, wena unjani?') {
+//       stage2 = stages;
+//       let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage2, level);
+//     } else if (stages === 'Ubani igama lakho?') {
+//       stage3 = stages;
+//       let updateUserProgress = await learningIsizuluRoute.updateUserProgress(userId, username, stage3, level);
+//     }
+//   }
 
-  res.render('intermediate', {
-    getIntermediateLevel,
-    stage1,
-    stage2,
-    stage3,
-    username
-  });
-});
+//   res.render('intermediate', {
+//     getIntermediateLevel,
+//     stage1,
+//     stage2,
+//     stage3,
+//     username
+//   });
+// });
 
 // app.post('/intermediate', async(req, res)=>{
 //   let username = req.body.username
@@ -187,7 +187,7 @@ app.get('/intermediate', async (req, res) => {
 // });
 
 app.post('/intermediate', async (req, res) => {
-  let username = req.params.username;
+  let username = req.body.username;
   await learningIsizuluRoute.insertPlayer(username);
   res.redirect(`/intermediate?username=${username}`);
   console.log(username)
